@@ -10,7 +10,9 @@
     "lodash": "^4.17.19",
     "next": "^10.0.4",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-markdown": "^5.0.3",
+    "remark-gfm": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
