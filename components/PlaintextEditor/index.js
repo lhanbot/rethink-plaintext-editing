@@ -5,10 +5,23 @@ import { Editor, EditorState } from 'draft-js';
 
 import css from './style.css';
 
-let initialState = EditorState.createEmpty();
+function updateFile({file, write, setCurrentFile, editorState}) {
+  const newFile = new File(
+    [editorState.getCurrentContent().getPlainText()],
+    file.name,
+    {
+      type: file.type,
+      lastModified: Date.now()
+    }
+  );
+  setCurrentFile(newFile);
+  write(newFile);
+}
+
 function PlaintextEditor({ file, write }) {
   console.log(file, write);
-  const [editorState, setEditorState] = React.useState(initialState);
+  const [editorState, setEditorState] = React.useState(EditorState.createEmpty());
+  const [currentFile, setCurrentFile] = React.useState(file)
   useEffect(() => {
     (async () => {
       setEditorState(EditorState.createWithText(await file.text()));
@@ -18,7 +31,14 @@ function PlaintextEditor({ file, write }) {
     <div className={css.editor}>
       <div className={css.title}>{path.basename(file.name)}</div>
       <div className={css.content}>
-        <Editor editorState={editorState} onChange={setEditorState} />
+        <Editor
+          editorState={editorState}
+          currentFile={currentFile}
+          onChange= {editorState => {
+            setEditorState(editorState);
+            updateFile({file, write, setCurrentFile, editorState});
+          }}
+        />
       </div>
     </div>
   );

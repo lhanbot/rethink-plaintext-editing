@@ -114,8 +114,12 @@ function PlaintextFilesChallenge() {
 
   const write = file => {
     console.log('Writing soon... ', file.name);
-
-    // TODO: Write the file to the `files` array
+    // lhan: assuming only support content update functionality
+    // No new file upload, no file type update.
+    let files = listFiles();
+    const index = files.findIndex(localFile => localFile.name === file.name);
+    files[index] = file;
+    setFiles(files);
   };
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
